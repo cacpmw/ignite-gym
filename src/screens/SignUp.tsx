@@ -4,12 +4,20 @@ import LogoSVG from "@assets/logo.svg";
 import { Input } from "@components/Input/Input";
 import { Button } from "@components/Button/Button";
 import { Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { IAuthNavigatorRoutesProps } from "@routes/auth.routes";
 export function SignUp() {
+    const navigation = useNavigation<IAuthNavigatorRoutesProps>();
+
+    function handleSignIn() {
+        navigation.navigate("signIn");
+    }
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <VStack flex={1} bg="gray.700" px={10} pb={Platform.OS === 'ios' ? 40 : 16}>
                 <Image
                     source={BackgroundImage}
+                    defaultSource={BackgroundImage}
                     alt="People exercising"
                     resizeMode="contain"
                     position="absolute"
@@ -56,6 +64,8 @@ export function SignUp() {
                     <Button
                         text="Sign In"
                         variant="outline"
+                        onPress={handleSignIn}
+
                     />
                 </Center>
 
