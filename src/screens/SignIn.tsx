@@ -6,6 +6,7 @@ import { Button } from "@components/Button/Button";
 import { Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IAuthNavigatorRoutesProps } from "@routes/auth.routes";
+
 export function SignIn() {
     const navigation = useNavigation<IAuthNavigatorRoutesProps>();
 
