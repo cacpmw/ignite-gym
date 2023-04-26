@@ -29,20 +29,21 @@ export function History() {
                 renderItem={({ item }) => (
                     <HistoryCard />
                 )}
+                stickySectionHeadersEnabled={false}
                 renderSectionHeader={({ section }) => (
                     <Heading
-                    color="gray.200"
-                    fontSize="md"
-                    mt={10}
-                    mb={3}
+                        color="gray.200"
+                        fontSize="md"
+                        mt={10}
+                        mb={3}
                     >{section.title}</Heading>
                 )}
                 contentContainerStyle={exercise.length === 0 && {
-                    flex:1,
+                    flex: 1,
                     justifyContent: "center"
                 }}
-                ListEmptyComponent={()=>(
-                    <EmptyList message="Empty list"/>
+                ListEmptyComponent={() => (
+                    <EmptyList message="Empty list" />
                 )}
             />
 
