@@ -13,7 +13,11 @@ export function SignUp() {
         navigation.navigate("signIn");
     }
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: Platform.OS === 'ios' ? 180 : 16
+        }}
+            showsVerticalScrollIndicator={false}>
             <VStack flex={1} bg="gray.700" px={10} pb={Platform.OS === 'ios' ? 40 : 16}>
                 <Image
                     source={BackgroundImage}
@@ -74,4 +78,3 @@ export function SignUp() {
 
     );
 }
-

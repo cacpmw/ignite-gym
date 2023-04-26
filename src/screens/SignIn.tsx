@@ -10,12 +10,21 @@ import { IAuthNavigatorRoutesProps } from "@routes/auth.routes";
 export function SignIn() {
     const navigation = useNavigation<IAuthNavigatorRoutesProps>();
 
-    function handleSignUp(){
+    function handleSignUp() {
         navigation.navigate("signUp");
     }
     return (
-        <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false}>
-            <VStack flex={1} bg="gray.700" px={10} pb={Platform.OS === 'ios' ? 40 : 16}>
+        <ScrollView contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: Platform.OS === 'ios' ? 180 : 16
+        }}
+            showsVerticalScrollIndicator={false}>
+            <VStack
+                flex={1}
+                bg="gray.700"
+                px={10}
+                pb={Platform.OS === 'ios' ? 40 : 16}
+            >
                 <Image
                     source={BackgroundImage}
                     defaultSource={BackgroundImage}
