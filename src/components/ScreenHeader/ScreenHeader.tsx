@@ -1,16 +1,17 @@
-import { Center, Heading } from "native-base";
+import { Center, Heading, ICenterProps } from "native-base";
 
 
-interface IScreenHeaderComponentProps {
+interface IScreenHeaderComponentProps extends ICenterProps{
     title: string;
 }
 
-export function ScreenHeader({ title }: IScreenHeaderComponentProps) {
+export function ScreenHeader({ title, ...rest }: IScreenHeaderComponentProps) {
     return (
         <Center
         bg="gray.600"
         pb={6}
         pt={16}
+        {...rest}
         >
             <Heading
             color="gray.100"
