@@ -1,4 +1,4 @@
-import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
+import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from "native-base";
 import BackgroundImage from "@assets/background.png";
 import LogoSVG from "@assets/logo.svg";
 import { Input } from "@components/Input/Input";
@@ -9,6 +9,8 @@ import { IAuthNavigatorRoutesProps } from "@routes/auth.routes";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { api } from "@services/ApiConnection";
+import { AppError } from "@exceptions/AppError";
 
 interface SignUpInputPayload {
     name: string;
@@ -28,6 +30,7 @@ const signUpSchema = Yup.object({
 
 export function SignUp() {
     const navigation = useNavigation<IAuthNavigatorRoutesProps>();
+    const toast = useToast();
 
 
     const { control, handleSubmit, formState: { errors } } = useForm<SignUpInputPayload>({
@@ -36,9 +39,20 @@ export function SignUp() {
     function handleSignIn() {
         navigation.navigate("signIn");
     }
-    function handleSignUp(data: SignUpInputPayload) {
-        console.log(data);
+    async function handleSignUp({ name, email, password }: SignUpInputPayload) {
+        try {
+            await api.post("/users", { name, email, password });
+        } catch (error) {
+            const isAppError = error instanceof AppError;
 
+            const title = isAppError ? error.message : 'Unable to reach the server. Please try again later';
+
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        }
 
 
     }
