@@ -27,10 +27,11 @@ export function ExerciseCard({title, description, ...rest }: IExerciseCardCompon
                     h={16}
                     rounded="md"
                     mr={4}
-                    resizeMode="center"
+                    resizeMode="cover"
                 />
                 <VStack flex={1}>
                     <Heading
+                        fontFamily="heading"
                         fontSize="lg"
                         color="white"
                     >{title}

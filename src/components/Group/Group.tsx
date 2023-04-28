@@ -27,7 +27,7 @@ export function Group({ name, isActive, ...rest }: IGroupComponentProps) {
                 color={isActive ? "green.500" : "gray.200"}
                 textTransform="uppercase"
                 fontSize="xs"
-                fontWeight="bold"
+                fontFamily="heading"
             >
                 {name}
             </Text>
