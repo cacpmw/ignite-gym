@@ -3,15 +3,15 @@ import { Group } from "@components/Group/Group";
 import { HomeHeader } from "@components/HomeHeader/HomeHeader";
 import { useNavigation } from "@react-navigation/native";
 import { IMainRoutesProps } from "@routes/main.routes";
-import { Center, FlatList, HStack, Heading, Text, VStack } from "native-base";
+import { FlatList, HStack, Heading, Text, VStack } from "native-base";
 import { useState } from "react";
 
 export function Home() {
     const navigation = useNavigation<IMainRoutesProps>();
 
     const [selectedGroup, setSelectedGroup] = useState("costa");
-    const [groups, setGroups] = useState(["costa", "biceps", "triceps", "ombro"]);
-    const [exercises, setExercises] = useState(["Remada", "Supino", "Barra", "Levantamento"]);
+    const [groups, setGroups] = useState(["back", "biceps", "triceps", "shoulders"]);
+    const [exercises, setExercises] = useState(["Bench Press", "Deadlift", "Burpee", "Plank","Push-up"]);
     function handleOpenExercise() {
         navigation.navigate("exercise")
     }
