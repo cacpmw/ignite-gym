@@ -2,13 +2,54 @@ import { Button } from "@components/Button/Button";
 import { Input } from "@components/Input/Input";
 import { ScreenHeader } from "@components/ScreenHeader/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto/UserPhoto";
-import { Center, Heading, ScrollView, Skeleton, Text, VStack } from "native-base";
+import { Center, Heading, ScrollView, Skeleton, Text, VStack, useToast } from "native-base";
 import { useState } from "react";
 import { Platform, TouchableOpacity } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 export function Profile() {
     const PHOTOSIZE = 33;
     const [photoIsLoading, setPhotoIsLoading] = useState(false);
+    const [photoUri, setPhotoUri] = useState("https://www.github.com/cacpmw.png");
+    const toast = useToast();
+
+    async function handleUserPhotoSelection() {
+        try {
+            setPhotoIsLoading(true);
+
+            let photo = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsMultipleSelection: false,
+                aspect: [4, 4],
+                quality: 1,
+                allowsEditing: true,
+            });
+            if (!photo.canceled) {
+                const photoInfo = await FileSystem.getInfoAsync(photo.assets[0].uri,{
+                    size: true
+                });
+                console.log(photoInfo);
+                if (photoInfo.exists && (photoInfo.size / 1024 / 1024) > 3) {
+                    return toast.show({
+                        title: "Too big a image. Select a photo under 5MB",
+                        placement:"top",
+                        bgColor:"red.500"
+
+                    });
+                }
+                setPhotoUri(photo.assets[0].uri);
+            }
+        } catch (error) {
+            console.log(error);
+
+        } finally {
+            setPhotoIsLoading(false);
+
+        }
+
+
+    }
     return (
         <VStack flex={1}>
             <ScreenHeader title="Profile" />
@@ -28,13 +69,15 @@ export function Profile() {
                     /> :
                         <UserPhoto
                             source={{
-                                uri: "https://www.github.com/cacpmw.png"
+                                uri: photoUri
                             }}
                             alt="profile image"
                             size={PHOTOSIZE}
-                            mr={4}
+
                         />}
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={handleUserPhotoSelection}
+                    >
                         <Text
                             alignItems="center"
                             fontFamily="heading"
@@ -84,8 +127,8 @@ export function Profile() {
                         secureTextEntry
                     />
                     <Button
-                    mt={4}
-                    text="Update"/>
+                        mt={4}
+                        text="Update" />
                 </VStack>
             </ScrollView>
 
