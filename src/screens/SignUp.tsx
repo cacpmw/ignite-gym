@@ -6,11 +6,41 @@ import { Button } from "@components/Button/Button";
 import { Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IAuthNavigatorRoutesProps } from "@routes/auth.routes";
+import { useForm, Controller } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+interface SignUpInputPayload {
+    name: string;
+    email: string;
+    password: string,
+    passwordConfirm: string;
+}
+
+const signUpSchema = Yup.object({
+    name: Yup.string().required("Required field"),
+    email: Yup.string().required("Required field").email("Invalid email address"),
+    password: Yup.string().required("Required field").min(6, "at least 6 chars"),
+    passwordConfirm: Yup.string().required("Required field")
+        .oneOf([Yup.ref("password")], "Passwords dont match"),
+
+});
+
 export function SignUp() {
     const navigation = useNavigation<IAuthNavigatorRoutesProps>();
 
+
+    const { control, handleSubmit, formState: { errors } } = useForm<SignUpInputPayload>({
+        resolver: yupResolver(signUpSchema),
+    });
     function handleSignIn() {
         navigation.navigate("signIn");
+    }
+    function handleSignUp(data: SignUpInputPayload) {
+        console.log(data);
+
+
+
     }
     return (
         <ScrollView contentContainerStyle={{
@@ -38,22 +68,80 @@ export function SignUp() {
                         mb={6}
                         fontFamily="heading"
                     >Create your account</Heading>
-                    <Input
-                        placeholder="Name"
-                        keyboardType="default"
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({ field: { onChange, value } }) => (
 
+                            <Input
+                                placeholder="Name"
+                                keyboardType="default"
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.name?.message}
+
+                            />
+
+
+                        )}
                     />
-                    <Input
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
+
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange, value } }) => (
+
+                            <Input
+                                placeholder="Email"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.email?.message}
+
+                            />
+
+
+                        )}
                     />
-                    <Input
-                        placeholder="Password"
-                        secureTextEntry
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Password"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.password?.message}
+
+                            />
+                        )}
                     />
+
+                    <Controller
+                        control={control}
+                        name="passwordConfirm"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Confirm Password"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                returnKeyType="send"
+                                value={value}
+                                onSubmitEditing={handleSubmit(handleSignUp)}
+                                errorMessage={errors.passwordConfirm?.message}
+
+                            />
+                        )}
+                    />
+
+
+
+
                     <Button
                         text="Sign Up"
+                        onPress={handleSubmit(handleSignUp)}
                     />
 
                 </Center>

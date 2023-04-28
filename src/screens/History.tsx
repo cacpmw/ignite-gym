@@ -36,6 +36,7 @@ export function History() {
                         fontSize="md"
                         mt={10}
                         mb={3}
+                        fontFamily="heading"
                     >{section.title}</Heading>
                 )}
                 contentContainerStyle={exercise.length === 0 && {
