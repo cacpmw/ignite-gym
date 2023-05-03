@@ -1,3 +1,4 @@
-const AUTHENTICATED_USER = "@gymignite:authUser";
+const AUTHENTICATED_USER = "@ignitegym:authUser";
+const AUTHENTICATED_USER_TOKEN="@ignitegym:token";
 
-export {AUTHENTICATED_USER}
+export { AUTHENTICATED_USER, AUTHENTICATED_USER_TOKEN }
