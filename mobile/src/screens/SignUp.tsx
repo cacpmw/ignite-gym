@@ -11,6 +11,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api } from "@services/ApiConnection";
 import { AppError } from "@exceptions/AppError";
+import { useState } from "react";
+import { useAuth } from "@hooks/useAuth";
 
 interface SignUpInputPayload {
     name: string;
@@ -29,6 +31,8 @@ const signUpSchema = Yup.object({
 });
 
 export function SignUp() {
+    const [isLoading, setIsLoading] = useState(false);
+    const {signIn} = useAuth();
     const navigation = useNavigation<IAuthNavigatorRoutesProps>();
     const toast = useToast();
 
@@ -41,7 +45,9 @@ export function SignUp() {
     }
     async function handleSignUp({ name, email, password }: SignUpInputPayload) {
         try {
+            setIsLoading(true);
             await api.post("/users", { name, email, password });
+            await signIn(email, password);
         } catch (error) {
             const isAppError = error instanceof AppError;
 
@@ -51,7 +57,10 @@ export function SignUp() {
                 title,
                 placement: 'top',
                 bgColor: 'red.500'
-            })
+            });
+
+        } finally {
+            setIsLoading(false);
         }
 
 
@@ -156,6 +165,7 @@ export function SignUp() {
                     <Button
                         text="Sign Up"
                         onPress={handleSubmit(handleSignUp)}
+                        isLoading={isLoading}
                     />
 
                 </Center>
